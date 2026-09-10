@@ -1,3 +1,4 @@
+name: AIDC
 
 services:
   postgres:
