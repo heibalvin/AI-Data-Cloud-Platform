@@ -1,0 +1,26 @@
+services:
+  postgrest:
+    image: postgrest/postgrest:v16.2
+    restart: unless-stopped
+    networks:
+      - logic_net
+      - data_net
+    environment:
+      PGRST_DB_URI: postgres://postgres:postgres@postgres:5432/default
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: postgres
+      PGRST_SERVER_PORT: 3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - postgrest_data:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.postgrest.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.postgrest.entrypoints=web"
+      - "traefik.http.services.postgrest.loadBalancer.server.port=3000"
+
+volumes:
+  postgrest_data:
+    driver: local

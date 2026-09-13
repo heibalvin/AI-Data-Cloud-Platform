@@ -1,0 +1,20 @@
+name: AICP
+
+networks:
+  app_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-app
+  logic_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-logic
+  data_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-data
+
+include:
+  - App/docker-compose.yml
+  - Logic/docker-compose.yml
+  - Data/docker-compose.yml
